@@ -75,9 +75,8 @@ export class StreamService {
         .outputOptions([
           '-codec: copy',
           '-start_number 0',
-          '-hls_time 3',
+          '-hls_time 10',
           '-hls_list_size 0',
-          '-hls_flags omit_endlist',
           '-f hls',
         ])
         .output(outputM3u8)
