@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -37,11 +38,16 @@ export class StreamController {
   }
 
   @Delete()
-  public async clearAllStreams() {
-    await this.streamService.clearAll();
+  public async deleteAllStreams() {
+    await this.streamService.deleteAll();
 
     return {
       message: 'Successfully',
     };
+  }
+
+  @Delete(':id')
+  public async clearById(@Param('id') id: string) {
+    await this.streamService.deleteById(id);
   }
 }

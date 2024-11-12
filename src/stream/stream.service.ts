@@ -27,7 +27,7 @@ export class StreamService {
     return this.databaseService.stream.findMany();
   }
 
-  public async clearAll() {
+  public async deleteAll() {
     await Promise.all([
       await fsPromises.rm(this.fileService.getStaticPath(FileFolder.HLS), {
         recursive: true,
@@ -39,6 +39,20 @@ export class StreamService {
       }),
       await this.databaseService.stream.deleteMany(),
     ]);
+  }
+
+  public async deleteById(id: string) {
+    const { filepath } = await this.databaseService.stream.delete({
+      where: { id },
+    });
+
+    await fsPromises.rm(
+      path.join(__dirname, '..', '..', 'static', path.dirname(filepath)),
+      {
+        recursive: true,
+        force: true,
+      },
+    );
   }
 
   public async createHlsStream(
