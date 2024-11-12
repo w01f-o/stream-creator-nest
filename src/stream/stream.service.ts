@@ -81,7 +81,7 @@ export class StreamService {
         ])
         .output(outputM3u8)
         .on('end', async () => {
-          const { filepath: streamPath, id } =
+          const { filepath: streamPath } =
             await this.databaseService.stream.create({
               data: {
                 filepath: `/${path
@@ -94,29 +94,6 @@ export class StreamService {
                 name: dto.name,
               },
             });
-
-          setTimeout(async () => {
-            await Promise.all([
-              await this.databaseService.stream.delete({
-                where: {
-                  id,
-                },
-              }),
-              await fsPromises.rm(
-                path.join(
-                  __dirname,
-                  '..',
-                  '..',
-                  'static',
-                  path.dirname(streamPath),
-                ),
-                {
-                  recursive: true,
-                  force: true,
-                },
-              ),
-            ]);
-          }, 7200);
 
           await fsPromises.rm(filepath);
 
