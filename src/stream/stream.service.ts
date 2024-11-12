@@ -73,9 +73,20 @@ export class StreamService {
     return new Promise((resolve, reject) => {
       ffmpeg(filepath)
         .outputOptions([
-          '-codec: copy',
-          '-start_number 0',
+          '-c:v libx264',
+          '-preset veryfast',
+          '-profile:v main',
+          '-level 3.1',
+          '-b:v 4500k',
+          '-maxrate 4500k',
+          '-bufsize 9000k',
+          '-g 60',
+          '-c:a aac',
+          '-b:a 128k',
+          '-ar 48000',
           '-hls_time 10',
+          '-hls_playlist_type vod',
+          '-start_number 0',
           '-hls_list_size 0',
           '-f hls',
         ])
